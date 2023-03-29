@@ -1,52 +1,33 @@
-# Prerequisites
-*.d
+*.user
 
-# Object files
-*.o
-*.ko
-*.obj
-*.elf
+*.aeproperties
 
-# Linker output
-*.ilk
-*.map
-*.exp
+.vs/
 
-# Precompiled Headers
-*.gch
-*.pch
+*.tmp
 
-# Libraries
-*.lib
-*.a
-*.la
-*.lo
+*.Generated.cs
+*.Generated.Event.cs
+*.generatedpreview.png
 
-# Shared objects (inc. Windows DLLs)
-*.dll
-*.so
-*.so.*
-*.dylib
+TiledObjects.Generated.xml
 
-# Executables
-*.exe
-*.out
-*.app
-*.i*86
-*.x86_64
-*.hex
+*.cachefile
 
-# Debug files
-*.dSYM/
-*.su
-*.idb
-*.pdb
+*.csvSettings
 
-# Kernel Module Compile Results
-*.mod*
-*.cmd
-.tmp_versions/
-modules.order
-Module.symvers
-Mkfile.old
-dkms.conf
+*.sln.metaproj
+
+packages/
+
+WonkeyGonk/WonkeyGonk/bin/
+WonkeyGonk/bin/
+
+WonkeyGonk/WonkeyGonk/obj/
+WonkeyGonk/obj/
+
+WonkeyGonk/Content/obj/
+
+!WonkeyGonk/x64
+!WonkeyGonk/x86
+!WonkeyGonk/Libraries
