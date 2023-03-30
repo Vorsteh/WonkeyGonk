@@ -107,24 +107,9 @@ namespace WonkeyGonk
         {
             if(Input == null) return;
 
-            if(Keyboard.GetState().IsKeyDown(Input.Left) && _isClimbing == false) 
+            if (Keyboard.GetState().IsKeyDown(Input.Up))
             {
-                _velocity.X = -2f;
-            }
-            else if (Keyboard.GetState().IsKeyDown(Input.Right) && _isClimbing == false)
-            {
-                _velocity.X = 2f;
-            }
-            else if (Keyboard.GetState().IsKeyDown(Input.Jump) && _hasJumped == false)
-            {
-                _position.Y -= 5f;
-                _velocity.Y = -4f;
-                _hasJumped = true;
-                _isGrounded = false;
-            }
-            else if (Keyboard.GetState().IsKeyDown(Input.Up))
-            {
-                foreach(Ladder ladder in _ladders)
+                foreach (Ladder ladder in _ladders)
                 {
                     if (GetRectangle().Intersects(ladder._rectangle))
                     {
@@ -137,9 +122,26 @@ namespace WonkeyGonk
                     }
                 }
             }
+
+            if (Keyboard.GetState().IsKeyDown(Input.Left) && !_isClimbing) 
+            {
+                _velocity.X = -2f;
+            }
+
+            else if (Keyboard.GetState().IsKeyDown(Input.Right) && !_isClimbing)
+            {
+                _velocity.X = 2f;
+            }
             else
             {
-                _velocity.X = 0;
+                _velocity.X = 0f;
+            }
+            if (Keyboard.GetState().IsKeyDown(Input.Jump) && _hasJumped == false)
+            {
+                _position.Y -= 5f;
+                _velocity.Y = -4f;
+                _hasJumped = true;
+                _isGrounded = false;
             }
         }
     }
