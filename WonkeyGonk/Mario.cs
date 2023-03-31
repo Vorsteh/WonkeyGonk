@@ -22,6 +22,7 @@ namespace WonkeyGonk
         List<Platform> _platforms;
         List<Ladder> _ladders;
 
+
         bool _isClimbing, _isGrounded, _hasJumped, _hitHead;
 
         private float gravity = 2.0f;
@@ -65,11 +66,16 @@ namespace WonkeyGonk
 
             if (_hasJumped && _isClimbing == false)
             {
-                float i = 1f;
+                float i = 0.7f;
+                _velocity.Y += i * 0.15f;
+            }
+            if (_isGrounded == false && _isClimbing == false)
+            {
+                float i = 0.7f;
                 _velocity.Y += i * 0.15f;
             }
 
-            if(_isGrounded)
+            if (_isGrounded)
             {
                 _velocity.Y = 0f;
             }
@@ -115,6 +121,7 @@ namespace WonkeyGonk
                     {
                         _position.Y -= 0.5f;
                         _isClimbing = true;
+                        _isGrounded = true;
                     }
                     else
                     {
@@ -126,17 +133,19 @@ namespace WonkeyGonk
             if (Keyboard.GetState().IsKeyDown(Input.Left) && !_isClimbing) 
             {
                 _velocity.X = -2f;
+                _isGrounded = false;
             }
 
             else if (Keyboard.GetState().IsKeyDown(Input.Right) && !_isClimbing)
             {
                 _velocity.X = 2f;
+                _isGrounded = false;
             }
             else
             {
                 _velocity.X = 0f;
             }
-            if (Keyboard.GetState().IsKeyDown(Input.Jump) && _hasJumped == false)
+            if (Keyboard.GetState().IsKeyDown(Input.Jump) && _hasJumped == false && !_isClimbing)
             {
                 _position.Y -= 5f;
                 _velocity.Y = -4f;
