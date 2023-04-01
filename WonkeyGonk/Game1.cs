@@ -1,7 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading;
 
 namespace WonkeyGonk
@@ -75,6 +77,8 @@ namespace WonkeyGonk
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
+            
+
             // TODO: Add your update logic here
 
             mario.Update(gameTime);
@@ -89,6 +93,13 @@ namespace WonkeyGonk
                     barrelList.RemoveAt(i);
                 }
             }
+
+            if (mario.checkBarrelCollision(barrelList))
+            {
+                Debug.WriteLine('a');
+            }
+
+            Debug.WriteLine(Mouse.GetState().X.ToString() + ':' + Mouse.GetState().Y.ToString());
 
             base.Update(gameTime);
         }

@@ -59,7 +59,6 @@ namespace WonkeyGonk
 
         public void Update(GameTime gameTime)
         {
-            Debug.WriteLine(_isGrounded);
             Move();
             topRect = new Rectangle((int)_position.X, (int)_position.Y, _runTextureOne.Width, -2);
             bottomRect = new Rectangle((int)_position.X, (int)_position.Y + _runTextureOne.Height, _runTextureOne.Width, 2);
@@ -152,6 +151,16 @@ namespace WonkeyGonk
                 _hasJumped = true;
                 _isGrounded = false;
             }
+        }
+
+        public bool checkBarrelCollision(List<Barrel> barrels)
+        {
+            foreach(Barrel barrel in barrels)
+            {
+                return barrel.GetRectangle().Intersects(_rectangle);
+            }
+
+            return false;
         }
     }
 }

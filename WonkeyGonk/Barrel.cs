@@ -30,6 +30,9 @@ namespace WonkeyGonk
             _position = new Vector2(170, 120);
         }
 
+        //Coords for switch 381:131, 
+
+
         public void Update()
         {
 
