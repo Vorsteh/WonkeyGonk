@@ -17,6 +17,7 @@ namespace WonkeyGonk
 
         Map map;
         List<Barrel> barrelList;
+        List<Platform> platforms;
 
         Mario mario;
 
@@ -53,7 +54,7 @@ namespace WonkeyGonk
 
 
 
-            List<Platform> platforms = createPlatforms();
+            platforms = createPlatforms();
 
 
             map = new Map(platforms, Content.Load<Texture2D>("Barrel2"), createLadders());
@@ -77,12 +78,12 @@ namespace WonkeyGonk
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            
 
             // TODO: Add your update logic here
 
             mario.Update(gameTime);
-            for(int i = barrelList.Count - 1; i >= 0; i--)
+
+            for (int i = barrelList.Count - 1; i >= 0; i--)
             {
                 Barrel barrel = barrelList[i];
 
@@ -94,12 +95,12 @@ namespace WonkeyGonk
                 }
             }
 
-            if (mario.checkBarrelCollision(barrelList))
+            foreach (Barrel barrel in barrelList)
             {
-                Debug.WriteLine('a');
+                barrel.CheckIfBarrelIsFalling(platforms);
             }
 
-            Debug.WriteLine(Mouse.GetState().X.ToString() + ':' + Mouse.GetState().Y.ToString());
+            //Debug.WriteLine(Mouse.GetState().X.ToString() + ':' + Mouse.GetState().Y.ToString());
 
             base.Update(gameTime);
         }
