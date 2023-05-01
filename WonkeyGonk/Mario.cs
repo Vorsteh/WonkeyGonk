@@ -157,7 +157,7 @@ namespace WonkeyGonk
         {
             foreach(Barrel barrel in barrels)
             {
-                return barrel.GetRectangle().Intersects(_rectangle);
+                return barrel.GetRectangle().Intersects(this.GetRectangle());
             }
 
             return false;

@@ -21,6 +21,9 @@ namespace WonkeyGonk
 
         Mario mario;
 
+        int barrelRespawnTimer = 150;
+
+
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -77,6 +80,20 @@ namespace WonkeyGonk
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
+
+            if(mario.checkBarrelCollision(barrelList))
+                Exit();
+
+            barrelRespawnTimer--;
+            if(barrelRespawnTimer <= 0)
+            {
+                barrelList.Add(new Barrel(barrelTexture)
+                {
+                    Origin = new Vector2(barrelTexture.Width / 2, barrelTexture.Height / 2)
+                });
+                Random random = new Random();
+                barrelRespawnTimer = random.Next(80, 150);
+            }
 
 
             // TODO: Add your update logic here

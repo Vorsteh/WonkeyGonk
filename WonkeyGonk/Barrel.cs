@@ -25,6 +25,12 @@ namespace WonkeyGonk
 
 
         bool isFalling = false;
+        bool hasTouchedPlatform = false;
+
+        private Vector2 moveLeftSpeed = new Vector2(-4f, 0.085f);
+        private Vector2 moveRightSpeed = new Vector2(4f, 0.085f);
+        private Vector2 moveDownLSpeed = new Vector2(0.1f, 1.7f);
+        private Vector2 moveDownRSpeed = new Vector2(-0.1f, 1.7f);
 
         public Barrel(Texture2D texture)
         {
@@ -43,11 +49,14 @@ namespace WonkeyGonk
             if (_position.X > 400)
             {
                 direction = -1;
+            } else if (_position.X < 100)
+            {
+                direction = 1;
             }
-            
+            setBarrelVelocity();
 
-            _position.X += 1 * direction;
-            _position.Y += _velocity.Y;
+            Debug.WriteLine(_velocity);
+            _position = _velocity;
         }
 
         public void Draw(SpriteBatch _sb)
@@ -57,15 +66,12 @@ namespace WonkeyGonk
 
         public void CheckIfBarrelIsFalling(List<Platform> platforms)
         {
-            foreach (Platform platform in platforms) 
+            foreach (Platform platform in platforms)
             {
-                if (GetRectangle().Intersects(platform._rectangle))
+                if (GetRectangle().Intersects(platform.GetRectangle()))
                 {
-                    _velocity.Y = 0.085f;
-                }
-                else
-                {
-                    _velocity.Y = 2f;
+                    hasTouchedPlatform = true;
+                    isFalling = false;
                 }
             }
         }
@@ -73,6 +79,24 @@ namespace WonkeyGonk
         public Rectangle GetRectangle()
         {
             return new Rectangle((int)_position.X, (int)_position.Y, _texture.Width, _texture.Height);
+        }
+
+        private void setBarrelVelocity()
+        {
+            if (direction == 1)
+            {
+                if (isFalling)
+                    _velocity = moveDownRSpeed;
+                else
+                    _velocity = moveRightSpeed;
+            }
+            else
+            {
+                if (isFalling)
+                    _velocity = moveDownLSpeed;
+                else
+                    _velocity = moveLeftSpeed;
+            }
         }
     }
 }
