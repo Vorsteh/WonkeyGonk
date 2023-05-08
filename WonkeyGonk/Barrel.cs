@@ -27,15 +27,18 @@ namespace WonkeyGonk
         bool isFalling = false;
         bool hasTouchedPlatform = false;
 
-        private Vector2 moveLeftSpeed = new Vector2(-4f, 0.085f);
-        private Vector2 moveRightSpeed = new Vector2(4f, 0.085f);
-        private Vector2 moveDownLSpeed = new Vector2(0.1f, 1.7f);
-        private Vector2 moveDownRSpeed = new Vector2(-0.1f, 1.7f);
+        List<Platform> _platforms;
 
-        public Barrel(Texture2D texture)
+        private Vector2 moveLeftSpeed = new Vector2(-2.1f, 0.21f);
+        private Vector2 moveRightSpeed = new Vector2(2.1f, 0.21f);
+        private Vector2 moveDownLSpeed = new Vector2(0.3f, 3f);
+        private Vector2 moveDownRSpeed = new Vector2(-0.3f, 3f);
+
+        public Barrel(Texture2D texture, List<Platform> platforms)
         {
             _texture = texture;
             _position = new Vector2(170, 120);
+            _platforms = platforms;
         }
 
         //Coords for switch 381:131, 
@@ -44,19 +47,20 @@ namespace WonkeyGonk
         public void Update()
         {
 
-            _rotation = _rotation > 360f ? 0f : _rotation += 0.1f;
+            _rotation = _rotation > 360f ? 0f : _rotation += 0.1f * direction;
+            CheckIfBarrelIsFalling(_platforms);
 
             if (_position.X > 400)
             {
                 direction = -1;
-            } else if (_position.X < 100)
+            } else if (_position.X < 70)
             {
                 direction = 1;
             }
             setBarrelVelocity();
 
-            Debug.WriteLine(_velocity);
-            _position = _velocity;
+            Debug.WriteLine(_velocity, direction.ToString());
+            _position += _velocity;
         }
 
         public void Draw(SpriteBatch _sb)
@@ -72,8 +76,11 @@ namespace WonkeyGonk
                 {
                     hasTouchedPlatform = true;
                     isFalling = false;
+                    return;
                 }
             }
+            direction *= -1;
+            isFalling = true;
         }
 
         public Rectangle GetRectangle()

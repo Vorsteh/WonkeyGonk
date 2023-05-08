@@ -21,7 +21,7 @@ namespace WonkeyGonk
 
         Mario mario;
 
-        int barrelRespawnTimer = 150;
+        int barrelRespawnTimer = 200;
 
 
         public Game1()
@@ -69,7 +69,7 @@ namespace WonkeyGonk
 
             barrelList = new List<Barrel>()
             {
-                new Barrel(barrelTexture)
+                new Barrel(barrelTexture, platforms)
                 {
                     Origin = new Vector2(barrelTexture.Width / 2, barrelTexture.Height / 2)
                 }
@@ -81,18 +81,18 @@ namespace WonkeyGonk
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            if(mario.checkBarrelCollision(barrelList))
+            if(mario.CollidedWithBarrle(barrelList))
                 Exit();
 
             barrelRespawnTimer--;
             if(barrelRespawnTimer <= 0)
             {
-                barrelList.Add(new Barrel(barrelTexture)
+                barrelList.Add(new Barrel(barrelTexture, platforms)
                 {
                     Origin = new Vector2(barrelTexture.Width / 2, barrelTexture.Height / 2)
                 });
                 Random random = new Random();
-                barrelRespawnTimer = random.Next(80, 150);
+                barrelRespawnTimer = random.Next(110, 200);
             }
 
 
@@ -198,25 +198,30 @@ namespace WonkeyGonk
                 new Ladder(new Vector2(360, 556), ladderTexture),
                 new Ladder(new Vector2(360, 556 - ladderTexture.Height), ladderTexture),
                 new Ladder(new Vector2(360, 556 - ladderTexture.Height * 2), ladderTexture),
+                new Ladder(new Vector2(360, 556 - ladderTexture.Height * 3), ladderTexture),
 
                 new Ladder(new Vector2(110, 476), ladderTexture),
                 new Ladder(new Vector2(110, 476 - ladderTexture.Height), ladderTexture),
                 new Ladder(new Vector2(110, 476 - ladderTexture.Height * 2), ladderTexture),
                 new Ladder(new Vector2(110, 476 - ladderTexture.Height * 3), ladderTexture),
+                new Ladder(new Vector2(110, 476 - ladderTexture.Height * 4), ladderTexture),
 
                 new Ladder(new Vector2(215, 395), ladderTexture),
                 new Ladder(new Vector2(215, 395 - ladderTexture.Height), ladderTexture),
                 new Ladder(new Vector2(215, 395 - ladderTexture.Height * 4), ladderTexture),
+                new Ladder(new Vector2(215, 395 - ladderTexture.Height * 5), ladderTexture),
 
                 new Ladder(new Vector2(360, 385), ladderTexture),
                 new Ladder(new Vector2(360, 385 - ladderTexture.Height), ladderTexture),
                 new Ladder(new Vector2(360, 385 - ladderTexture.Height * 2), ladderTexture),
                 new Ladder(new Vector2(360, 385 - ladderTexture.Height * 3), ladderTexture),
+                new Ladder(new Vector2(360, 385 - ladderTexture.Height * 4), ladderTexture),
 
                 new Ladder(new Vector2(110, 294), ladderTexture),
                 new Ladder(new Vector2(110, 294 - ladderTexture.Height), ladderTexture),
                 new Ladder(new Vector2(110, 294 - ladderTexture.Height * 2), ladderTexture),
                 new Ladder(new Vector2(110, 294 - ladderTexture.Height * 3), ladderTexture),
+                new Ladder(new Vector2(110, 294 - ladderTexture.Height * 4), ladderTexture),
             };
 
             return ladderList;

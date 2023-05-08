@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -26,8 +27,12 @@ namespace WonkeyGonk
         bool _isClimbing, _isGrounded, _hasJumped, _hitHead;
 
         private float gravity = 2.0f;
+        private bool noclip = false;
+        
+        private int textureTimer = 10;
 
         public Input Input;
+        SpriteEffects se = SpriteEffects.FlipHorizontally;
 
         public Mario(Vector2 position, Texture2D climbTexture, Texture2D runTextureOne, Texture2D runTextureTwo, List<Platform> platforms, List<Ladder> ladders)
         {
@@ -54,14 +59,30 @@ namespace WonkeyGonk
 
         public bool CollidedWithBarrle(List<Barrel> barrels)
         {
+            foreach(Barrel barrel in barrels)
+            {
+                if (this.GetRectangle().Intersects(barrel.GetRectangle())) return true;
+            }
             return false;
+        }
+
+
+        private void getTexture()
+        {
+            textureTimer--;
+            this._currentTexture = this.textureTimer <= 0 ? this._runTextureOne : this._runTextureTwo;
+            if (textureTimer < 0) textureTimer = 40;
         }
 
         public void Update(GameTime gameTime)
         {
             Move();
+            getTexture();
             topRect = new Rectangle((int)_position.X, (int)_position.Y, _runTextureOne.Width, -2);
             bottomRect = new Rectangle((int)_position.X, (int)_position.Y + _runTextureOne.Height, _runTextureOne.Width, 2);
+
+            _currentTexture = _runTextureOne;
+            _currentTexture = _runTextureTwo;
 
             if (_hasJumped && _isClimbing == false)
             {
@@ -106,61 +127,81 @@ namespace WonkeyGonk
         }
         public void Draw(SpriteBatch _spriteBatch)
         {
-            _spriteBatch.Draw(_runTextureOne, _position, Color.White);
+            _spriteBatch.Draw(_currentTexture, new Rectangle((int)_position.X + _currentTexture.Width, (int)_position.Y + _currentTexture.Height, _currentTexture.Width, _currentTexture.Height), null, Color.White, 0, new Vector2(50, 50), se, 0f);
         }
         private void Move()
         {
-            if(Input == null) return;
+            if (Input == null) return;
 
-            if (Keyboard.GetState().IsKeyDown(Input.Up))
+            if (Keyboard.GetState().IsKeyDown(Keys.I))
             {
-                foreach (Ladder ladder in _ladders)
+                noclip = !noclip;
+            }
+
+            if (!noclip)
+            {
+                if (Keyboard.GetState().IsKeyDown(Input.Up))
                 {
-                    if (GetRectangle().Intersects(ladder._rectangle))
+                    foreach (Ladder ladder in _ladders)
                     {
-                        _position.Y -= 0.5f;
-                        _isClimbing = true;
-                        _isGrounded = true;
-                    }
-                    else
-                    {
-                        _isClimbing = false;
+                        if (GetRectangle().Intersects(ladder._rectangle))
+                        {
+                            _position.Y -= 0.5f;
+                            _isClimbing = true;
+                            _isGrounded = true;
+                        }
+                        else
+                        {
+                            _isClimbing = false;
+                        }
                     }
                 }
-            }
 
-            if (Keyboard.GetState().IsKeyDown(Input.Left) && !_isClimbing) 
-            {
-                _velocity.X = -2f;
-                _isGrounded = false;
-            }
+                if (Keyboard.GetState().IsKeyDown(Input.Left) && !_isClimbing)
+                {
+                    _velocity.X = -2f;
+                    _isGrounded = false;
+                    se = SpriteEffects.FlipHorizontally;
+                }
 
-            else if (Keyboard.GetState().IsKeyDown(Input.Right) && !_isClimbing)
-            {
-                _velocity.X = 2f;
-                _isGrounded = false;
+                else if (Keyboard.GetState().IsKeyDown(Input.Right) && !_isClimbing)
+                {
+                    _velocity.X = 2f;
+                    _isGrounded = false;
+                    se = SpriteEffects.None;
+                }
+                else
+                {
+                    _velocity.X = 0f;
+                }
+                if (Keyboard.GetState().IsKeyDown(Input.Jump) && _hasJumped == false && !_isClimbing)
+                {
+                    _position.Y -= 5f;
+                    _velocity.Y = -4f;
+                    _hasJumped = true;
+                    _isGrounded = false;
+                }
             }
             else
             {
-                _velocity.X = 0f;
+                _velocity = Vector2.Zero;
+                if (Keyboard.GetState().IsKeyDown(Input.Left))
+                {
+                    _position.X -= 2f;
+                }
+                else if (Keyboard.GetState().IsKeyDown(Input.Right))
+                {
+                    _position.X += 2f;
+                }
+                else if (Keyboard.GetState().IsKeyDown(Keys.S))
+                {
+                    _position.Y += 2f;
+                }
+                else if (Keyboard.GetState().IsKeyDown(Input.Up))
+                {
+                    _position.Y -= 2f;
+                }
             }
-            if (Keyboard.GetState().IsKeyDown(Input.Jump) && _hasJumped == false && !_isClimbing)
-            {
-                _position.Y -= 5f;
-                _velocity.Y = -4f;
-                _hasJumped = true;
-                _isGrounded = false;
-            }
-        }
-
-        public bool checkBarrelCollision(List<Barrel> barrels)
-        {
-            foreach(Barrel barrel in barrels)
-            {
-                return barrel.GetRectangle().Intersects(this.GetRectangle());
-            }
-
-            return false;
         }
     }
 }
