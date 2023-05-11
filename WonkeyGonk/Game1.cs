@@ -163,7 +163,7 @@ namespace WonkeyGonk
                     platforms.Add(new Platform(platformTexture, new Vector2(60 + i * 32, 500 + (i - 5) * 3)));
                 } else if (i > 10 && i < 21)
                 {
-                    platforms.Add(new Platform(platformTexture, new Vector2(60 + (i - 10) * 32, 440 - (i - 5) * 3)));
+                    platforms.Add(new Platform(platformTexture, new Vector2(60 + (i-9) * 32, 440 - (i - 5) * 3)));
                 }
                 else if (i > 21 && i < 32)
                 {

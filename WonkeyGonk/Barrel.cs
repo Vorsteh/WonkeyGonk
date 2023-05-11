@@ -48,6 +48,7 @@ namespace WonkeyGonk
         {
 
             _rotation = _rotation > 360f ? 0f : _rotation += 0.1f * direction;
+            _rotation = _rotation > 360f ? 0f : _rotation += 0.1f * direction;
             CheckIfBarrelIsFalling(_platforms);
 
             if (_position.X > 400)
@@ -58,8 +59,6 @@ namespace WonkeyGonk
                 direction = 1;
             }
             setBarrelVelocity();
-
-            Debug.WriteLine(_velocity, direction.ToString());
             _position += _velocity;
         }
 

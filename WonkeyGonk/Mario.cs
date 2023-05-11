@@ -66,7 +66,6 @@ namespace WonkeyGonk
             return false;
         }
 
-
         private void getTexture()
         {
             textureTimer--;
@@ -127,7 +126,8 @@ namespace WonkeyGonk
         }
         public void Draw(SpriteBatch _spriteBatch)
         {
-            _spriteBatch.Draw(_currentTexture, new Rectangle((int)_position.X + _currentTexture.Width, (int)_position.Y + _currentTexture.Height, _currentTexture.Width, _currentTexture.Height), null, Color.White, 0, new Vector2(50, 50), se, 0f);
+            //_spriteBatch.Draw(_currentTexture, new Rectangle((int)_position.X + _currentTexture.Width, (int)_position.Y + _currentTexture.Height, _currentTexture.Width, _currentTexture.Height), null, Color.White, 0, new Vector2(50, 50), se, 0f);
+            _spriteBatch.Draw(_currentTexture, _position, Color.White);
         }
         private void Move()
         {
