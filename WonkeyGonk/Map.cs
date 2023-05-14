@@ -16,6 +16,7 @@ namespace WonkeyGonk
         List<Ladder> ladderList;
         
         
+        //The map i guess
         public Map(List<Platform> platforms, Texture2D barrelTexture, List<Ladder> ladders) 
         {
             this.platforms = platforms;
@@ -42,6 +43,7 @@ namespace WonkeyGonk
         }
     }
 
+    //The platform class used to make platforms
     public class Platform
     {
         public Texture2D _texture;

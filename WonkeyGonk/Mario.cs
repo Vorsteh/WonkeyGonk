@@ -1,19 +1,14 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Net.Sockets;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace WonkeyGonk
 {
     internal class Mario
     {
-        private Vector2 _position;
+        public Vector2 _position;
         private Vector2 _velocity;
 
         private Texture2D _climbTexture, _runTextureOne, _runTextureTwo, _currentTexture;
@@ -40,6 +35,7 @@ namespace WonkeyGonk
             this._climbTexture = climbTexture;
             this._runTextureOne = runTextureOne;
             this._runTextureTwo = runTextureTwo;
+            this._currentTexture = runTextureOne;
 
             this._platforms = platforms;
             this._ladders = ladders;
@@ -52,11 +48,14 @@ namespace WonkeyGonk
             this._rectangle = new Rectangle((int)position.X, (int)position.Y,runTextureOne.Width, runTextureOne.Height);
         }
 
+
+        //return rectuable
         public Rectangle GetRectangle()
         {
             return new Rectangle((int)_position.X, (int)_position.Y, _runTextureOne.Width, _runTextureOne.Height);
         }
 
+        //check barrle collsion
         public bool CollidedWithBarrle(List<Barrel> barrels)
         {
             foreach(Barrel barrel in barrels)
@@ -66,22 +65,12 @@ namespace WonkeyGonk
             return false;
         }
 
-        private void getTexture()
-        {
-            textureTimer--;
-            this._currentTexture = this.textureTimer <= 0 ? this._runTextureOne : this._runTextureTwo;
-            if (textureTimer < 0) textureTimer = 40;
-        }
-
         public void Update(GameTime gameTime)
         {
+
             Move();
-            getTexture();
             topRect = new Rectangle((int)_position.X, (int)_position.Y, _runTextureOne.Width, -2);
             bottomRect = new Rectangle((int)_position.X, (int)_position.Y + _runTextureOne.Height, _runTextureOne.Width, 2);
-
-            _currentTexture = _runTextureOne;
-            _currentTexture = _runTextureTwo;
 
             if (_hasJumped && _isClimbing == false)
             {
@@ -126,9 +115,10 @@ namespace WonkeyGonk
         }
         public void Draw(SpriteBatch _spriteBatch)
         {
-            //_spriteBatch.Draw(_currentTexture, new Rectangle((int)_position.X + _currentTexture.Width, (int)_position.Y + _currentTexture.Height, _currentTexture.Width, _currentTexture.Height), null, Color.White, 0, new Vector2(50, 50), se, 0f);
-            _spriteBatch.Draw(_currentTexture, _position, Color.White);
+            _spriteBatch.Draw(_currentTexture, _position, null, Color.White, 0, Vector2.Zero, 1, se, 0);
         }
+
+        //looks keyboard input and moves mario absed on it
         private void Move()
         {
             if (Input == null) return;
@@ -149,6 +139,7 @@ namespace WonkeyGonk
                             _position.Y -= 0.5f;
                             _isClimbing = true;
                             _isGrounded = true;
+                            _currentTexture = _climbTexture;
                         }
                         else
                         {
@@ -161,6 +152,7 @@ namespace WonkeyGonk
                 {
                     _velocity.X = -2f;
                     _isGrounded = false;
+                    _currentTexture = _runTextureOne;
                     se = SpriteEffects.FlipHorizontally;
                 }
 
@@ -169,6 +161,7 @@ namespace WonkeyGonk
                     _velocity.X = 2f;
                     _isGrounded = false;
                     se = SpriteEffects.None;
+                    _currentTexture = _runTextureOne;
                 }
                 else
                 {

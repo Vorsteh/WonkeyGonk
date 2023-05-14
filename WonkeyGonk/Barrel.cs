@@ -67,6 +67,8 @@ namespace WonkeyGonk
             _sb.Draw(_texture, _position, null, Color.White, _rotation, Origin, 1, SpriteEffects.None, 0f);
         }
 
+
+        //Cecks if barrel is falling
         public void CheckIfBarrelIsFalling(List<Platform> platforms)
         {
             foreach (Platform platform in platforms)
@@ -82,11 +84,14 @@ namespace WonkeyGonk
             isFalling = true;
         }
 
+
+        //Retturns barrels rect
         public Rectangle GetRectangle()
         {
             return new Rectangle((int)_position.X, (int)_position.Y, _texture.Width, _texture.Height);
         }
 
+        //changes barrels velocity based on positions
         private void setBarrelVelocity()
         {
             if (direction == 1)

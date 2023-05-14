@@ -40,6 +40,7 @@ namespace WonkeyGonk
             base.Initialize();
         }
 
+        //Loade everything
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
@@ -78,12 +79,17 @@ namespace WonkeyGonk
 
         protected override void Update(GameTime gameTime)
         {
+            if (mario != null)
+            {
+                if(mario._position.Y > 1000) Exit();
+                if (mario.GetRectangle().Intersects(new Rectangle(153, 25, princessTexture.Width, princessTexture.Height))) Exit();
+            }
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
             if(mario.CollidedWithBarrle(barrelList))
                 Exit();
-
+            
             barrelRespawnTimer--;
             if(barrelRespawnTimer <= 0)
             {
@@ -144,6 +150,8 @@ namespace WonkeyGonk
         }
 
 
+
+        //Funcitons to generatre the platforms and ladders list
         private static List<Platform> createPlatforms()
         {
             List<Platform> platforms = new List<Platform>();
